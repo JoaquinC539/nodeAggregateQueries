@@ -4,7 +4,10 @@
   "description": "node aggregate mongo queries practice",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "jest",
+    "dev": "nodemon ./src/index",
+    "build": "tsc",
+    "war":"tsc -w & nodemon -q -w dist dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +24,18 @@
   },
   "homepage": "https://github.com/JoaquinC539/nodeAggregateQueries#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "dotenv": "^16.3.1",
+    "eslint": "^8.50.0",
+    "express": "^4.18.2",
+    "mongodb": "^6.1.0",
+    "mongoose": "^7.5.2",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.23.0",
+    "@types/jest": "^29.5.5",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "ts-jest": "^29.1.1"
   }
 }
