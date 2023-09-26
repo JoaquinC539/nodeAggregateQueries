@@ -7,13 +7,20 @@ exports.App = void 0;
 // const express=require("express")
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const path_1 = __importDefault(require("path"));
+const Routes_1 = require("./routes/Routes");
 class App {
     constructor(port) {
         this.express = (0, express_1.default)();
         this.port = 3500;
+        this.routes = new Routes_1.Routes();
         this.port = port;
         this.express.use(body_parser_1.default.urlencoded({ extended: false }));
         this.express.use(body_parser_1.default.json());
+        this.express.use("/api", express_1.default.static(path_1.default.join(__dirname, 'public')));
+        this.express.use('/api', this.routes.routes);
+        this.express.set('view engine', 'ejs');
+        this.express.set('views', path_1.default.join(__dirname, 'views'));
     }
     getPort() {
         return Number(this.port);
