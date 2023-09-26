@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 export class DbConf{
-    private dbURI:string="";
+    private dbURI:string|undefined="";
 
-    constructor(dbURI:string){
+    constructor(dbURI?:string | undefined){
         this.dbURI=dbURI;
     }
     public async connectDB(){
