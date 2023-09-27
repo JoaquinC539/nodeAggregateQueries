@@ -4,7 +4,7 @@ import	{IndexController} from "../controllers/IndexController";
 
 export class Routes{
     public routes=express.Router();
-    private indexController:IndexController=new IndexController();
+    private indexController:IndexController=new IndexController(express());
     constructor(){
         this.routes.get('/',this.indexController.index)
         this.routes.get('/index',this.indexController.index)

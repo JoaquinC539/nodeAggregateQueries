@@ -3,8 +3,10 @@ import express from 'express';
 import  path  from "path";
 import fs from 'fs';
 export class IndexController{
-    private express:any=express()
-    constructor(){}
+    private express:any;
+    constructor(expressInstance:any){
+        this.express=expressInstance;
+    }
 
     public index(req:Request,res:Response){
         const name:string="John";

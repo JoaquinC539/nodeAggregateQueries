@@ -4,11 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IndexController = void 0;
-const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 class IndexController {
-    constructor() {
-        this.express = (0, express_1.default)();
+    constructor(expressInstance) {
+        this.express = expressInstance;
     }
     index(req, res) {
         const name = "John";

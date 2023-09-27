@@ -9,7 +9,7 @@ const IndexController_1 = require("../controllers/IndexController");
 class Routes {
     constructor() {
         this.routes = express_1.default.Router();
-        this.indexController = new IndexController_1.IndexController();
+        this.indexController = new IndexController_1.IndexController((0, express_1.default)());
         this.routes.get('/', this.indexController.index);
         this.routes.get('/index', this.indexController.index);
         this.routes.get('/index/js', this.indexController.js);
