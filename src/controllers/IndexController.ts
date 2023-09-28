@@ -1,11 +1,10 @@
-import { Request,Response } from "express"
-import express from 'express';
+import { Request,Response } from "express";
 import  path  from "path";
-import fs from 'fs';
+
 export class IndexController{
-    private express:any;
-    constructor(expressInstance:any){
-        this.express=expressInstance;
+    
+    constructor(expressInstance?:any){
+        
     }
 
     public index(req:Request,res:Response){

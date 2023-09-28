@@ -7,7 +7,6 @@ exports.IndexController = void 0;
 const path_1 = __importDefault(require("path"));
 class IndexController {
     constructor(expressInstance) {
-        this.express = expressInstance;
     }
     index(req, res) {
         const name = "John";
