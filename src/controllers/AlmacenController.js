@@ -13,9 +13,7 @@ exports.AlmacenController = void 0;
 const Almacen_1 = require("../class/Almacen");
 class AlmacenController {
     constructor(expressInstance) {
-    }
-    getAlmacenes(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.getAlmacenes = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 // const almacen :Array<IAlmacen>=await AlmacenModel.find();
                 function Query() {

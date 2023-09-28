@@ -1,16 +1,17 @@
 import { Request,Response } from "express";
-import { AlmacenModel,IAlmacen } from "../class/Almacen";
+import { Almacen, AlmacenModel } from "../class/Almacen";
+import { PipelineStage } from "mongoose";
 
 export class AlmacenController{
     
     constructor(expressInstance?:any){
         
     }
-    public async getAlmacenes(req:Request,res:Response){
+    public getAlmacenes =async (req:Request,res:Response):Promise<void>=>{
         try {
             // const almacen :Array<IAlmacen>=await AlmacenModel.find();
-            async function Query(){
-                let query:Array<any>=[]
+            async function Query():Promise<Almacen[]>{
+                let query:Array<PipelineStage>=[]
                 query.push({$match:{'activo':{$eq:true}}});
                 query.push({$group:{
                     '_id':'$_id',
