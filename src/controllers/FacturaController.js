@@ -12,11 +12,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FacturaController = void 0;
 const Factura_1 = require("../class/Factura");
 const FacturaService_1 = require("../services/FacturaService");
+const CsvExportService_1 = require("../services/CsvExportService");
 class FacturaController {
     constructor() {
-        this.getCuentasPorCobrar = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.getIndexFacturas = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            if (req.query.export === "true" || req.headers["content-type"] === "text/csv") {
+                try {
+                    const facturas = yield this._facturaServce.getFacturaIndexExport(req.query);
+                    const fileName = "facturas.csv";
+                    const columns = { _id: "ID", estatus: "Estatus", fecha: "Fecha", folio: "Folio",
+                        moneda: "Moneda", total: "Total", Cliente: 'Cliente', Serie: "Serie",
+                        razonSocial: "Razon Social", FormaDePago: "Forma de Pago", Tienda: "Tienda", totalTC: "Total x tipo Cambio" };
+                    const formateDate = (date) => {
+                        let datejs = new Date(date);
+                        return datejs.toLocaleDateString("es-MX");
+                    };
+                    const parseCliente = (cliente) => {
+                        return cliente[0] ? cliente[0].nombre : "";
+                    };
+                    const formatters = { fecha: formateDate, Cliente: parseCliente };
+                    yield this._csvExportService.exportCSV(res, columns, facturas, fileName, formatters);
+                    return;
+                }
+                catch (error) {
+                    res.status(500).json({ error: "Error in exporting to csv", err: error });
+                }
+            }
+            const facturas = yield this._facturaServce.getFacturaIndex(req.query);
+            res.status(200).json(facturas);
         });
         this._facturaServce = new FacturaService_1.FacturaService(Factura_1.FacturaModel);
+        this._csvExportService = new CsvExportService_1.CsvExportService();
     }
 }
 exports.FacturaController = FacturaController;
