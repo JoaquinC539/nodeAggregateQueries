@@ -1,0 +1,7 @@
+{
+    "allowedOrigins":[
+        "localhost:4200",
+        "*"
+
+    ]
+}

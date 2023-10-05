@@ -1,18 +1,22 @@
 // const express=require("express")
 import express from 'express';
 import bodyParser from 'body-parser';
-import path from 'path'
+import path from 'path';
+const cors =require('cors')
 import { Routes } from './routes/Routes';
+import { Cors } from './conf/Cors';
 
 export class App{
     private express:any=express();
     private port:number | string | undefined=3500;
     private routes:Routes=new Routes();
+    private cors:Cors=new Cors();
 
     constructor(port?:number | string){
         this.port=port;
         this.express.use(bodyParser.urlencoded({extended:false}));
         this.express.use(bodyParser.json());
+        this.express.use(cors(this.cors))
         this.express.use("/api",express.static(path.join(__dirname,'public')));
         this.express.use('/api',this.routes.routes);
         this.express.set('view engine','ejs');

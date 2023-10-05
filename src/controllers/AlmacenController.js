@@ -23,6 +23,7 @@ class AlmacenController {
                         query.push({ $group: {
                                 '_id': '$_id',
                                 'clave': { $first: '$clave' },
+                                'nombre': { $first: '$nombre' },
                                 'activo': { $first: '$activo' }
                             } });
                         query.push({ $sort: { '_id': -1 } });
@@ -30,7 +31,6 @@ class AlmacenController {
                     });
                 }
                 const almacenes = yield Query();
-                console.log(almacenes.length);
                 res.status(200).json(almacenes);
             }
             catch (error) {

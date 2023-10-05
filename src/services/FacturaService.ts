@@ -22,6 +22,7 @@ export class FacturaService{
             queryParam.max=15;
         }
         let query:Array<PipelineStage>=[];
+        
         query.push({$sort:{'_id':-1}});
         query.push({$match:{'estatus':'TIMBRADA'}});
         query.push({$lookup:{from:'proveedor',localField:'cliente',foreignField:'_id',as:'Cliente'}});
@@ -33,15 +34,14 @@ export class FacturaService{
             query.push({$project:{
                 "_id":1,
                 "estatus":1,
-                "Cliente._id":1,
-                "Cliente.nombre":1,
-                'Serie':{$arrayElemAt:['$Serie.nombre',0]},
+                "cliente":{$arrayElemAt:["$Cliente.nombre",0]},
+                'serie':{$arrayElemAt:['$Serie.nombre',0]},
                 "folio":1,
                 "razonSocial":{$arrayElemAt:['$Documento.datosFacturacionId',0]},
-                "FormaDePago":{$arrayElemAt:['$FormaDePago.nombre',0]},
+                "formaDePago":{$arrayElemAt:['$FormaDePago.nombre',0]},
                 "fecha":1,
                 "moneda":1,
-                "Tienda":{$arrayElemAt:['$Tienda.nombre',0]},
+                "tienda":{$arrayElemAt:['$Tienda.nombre',0]},
                 "total":1,
                 "totalTC":{$multiply:['$total','$tipoCambio']}
             }});
