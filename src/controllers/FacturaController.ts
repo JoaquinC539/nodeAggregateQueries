@@ -19,17 +19,14 @@ export class FacturaController {
             try {
                 const facturas:Array<Factura>=await this._facturaServce.getFacturaIndexExport(req.query);
                 const fileName:string="facturas.csv";
-                const columns:Object={_id:"ID",estatus:"Estatus",fecha:"Fecha",folio:"Folio",
-                moneda:"Moneda",total:"Total",Cliente:'Cliente',Serie:"Serie",
+                const columns:Object={_id:"ID",estatus:"Estatus",tipo:"Tipo",fecha:"Fecha",folio:"Folio",
+                moneda:"Moneda",total:"Total",cliente:'Cliente',serie:"Serie",
                 razonSocial:"Razon Social",FormaDePago:"Forma de Pago",Tienda:"Tienda",totalTC:"Total x tipo Cambio"}
                 const formateDate=(date:Date | string):string=>{
                     let datejs=new Date(date);
                     return datejs.toLocaleDateString("es-MX");
                 }
-                const parseCliente=(cliente:Array<{_id:number,nombre:string}>):string=>{
-                    return cliente[0] ? cliente[0].nombre:"";
-                }
-                const formatters={fecha:formateDate,Cliente:parseCliente}
+                const formatters={fecha:formateDate}
                 
                 await this._csvExportService.exportCSV(res,columns,facturas,fileName,formatters)
                 return

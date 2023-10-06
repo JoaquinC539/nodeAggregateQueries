@@ -57,7 +57,7 @@ export class CsvExportService{
                             }
                         });
                     }
-                    console.log(row)
+                    
                     stringifier.write(row)
                 } 
             } catch (error) {
