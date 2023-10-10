@@ -96,7 +96,6 @@ class CsvExportService {
                                 }
                             }
                             if (i === data.length) {
-                                console.log(" i=data");
                                 setTimeout(() => {
                                     stringifier.end();
                                 }, 500);
