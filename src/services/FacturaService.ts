@@ -16,7 +16,7 @@ export class FacturaService{
 
     public buildFacturaIndexQuery(queryParam:{[key:string]:any}):Array<PipelineStage>{
         if(queryParam.offset===undefined){
-            queryParam.offset=1;
+            queryParam.offset=0;
         }
         if(queryParam.max===undefined){
             queryParam.max=15;

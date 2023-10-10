@@ -11,32 +11,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AlmacenController = void 0;
 const Almacen_1 = require("../class/Almacen");
+const AlmacenService_1 = require("../services/AlmacenService");
+const CsvExportService_1 = require("../services/CsvExportService");
 class AlmacenController {
-    constructor(expressInstance) {
+    constructor() {
         this.getAlmacenes = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            try {
-                // const almacen :Array<IAlmacen>=await AlmacenModel.find();
-                function Query() {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        let query = [];
-                        query.push({ $match: { 'activo': { $eq: true } } });
-                        query.push({ $group: {
-                                '_id': '$_id',
-                                'clave': { $first: '$clave' },
-                                'nombre': { $first: '$nombre' },
-                                'activo': { $first: '$activo' }
-                            } });
-                        query.push({ $sort: { '_id': -1 } });
-                        return yield Almacen_1.AlmacenModel.aggregate(query).exec();
-                    });
+            if (req.query.export === 'true' || req.headers["content-type"] === "text/csv") {
+                try {
+                    const almacenes = yield this._almacen.indexExport(req.query);
+                    const fileName = yield "almacen.csv";
+                    const columns = yield { _id: 'ID', clave: 'Clave', nombre: "Nombre" };
+                    yield this._csv.exportCSV(res, columns, almacenes, fileName);
+                    return;
                 }
-                const almacenes = yield Query();
-                res.status(200).json(almacenes);
+                catch (error) {
+                    res.status(500).json(error);
+                }
             }
-            catch (error) {
-                res.status(500).json(error);
-            }
+            const almacenes = yield this._almacen.index(req.query);
+            res.status(200).json(almacenes);
         });
+        this._almacen = new AlmacenService_1.AlmacenService(Almacen_1.AlmacenModel);
+        this._csv = new CsvExportService_1.CsvExportService();
     }
 }
 exports.AlmacenController = AlmacenController;

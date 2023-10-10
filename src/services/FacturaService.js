@@ -15,7 +15,7 @@ class FacturaService {
     }
     buildFacturaIndexQuery(queryParam) {
         if (queryParam.offset === undefined) {
-            queryParam.offset = 1;
+            queryParam.offset = 0;
         }
         if (queryParam.max === undefined) {
             queryParam.max = 15;

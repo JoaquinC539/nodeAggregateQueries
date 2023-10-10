@@ -15,6 +15,7 @@ export class FacturaController {
     }
 
     public getIndexFacturas = async (req: Request, res: Response): Promise<void> => {
+        // console.log(req.query)
        if(req.query.export==="true" || req.headers["content-type"]==="text/csv"){
             try {
                 const facturas:Array<Factura>=await this._facturaServce.getFacturaIndexExport(req.query);
@@ -40,4 +41,6 @@ export class FacturaController {
     
    
 }
+
+  
 

@@ -16,6 +16,7 @@ const CsvExportService_1 = require("../services/CsvExportService");
 class FacturaController {
     constructor() {
         this.getIndexFacturas = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            // console.log(req.query)
             if (req.query.export === "true" || req.headers["content-type"] === "text/csv") {
                 try {
                     const facturas = yield this._facturaServce.getFacturaIndexExport(req.query);
