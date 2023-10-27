@@ -5,11 +5,15 @@ class PedidoService {
     constructor(documentoModel) {
         this.documentoModel = documentoModel;
     }
-    getPedidos() {
-        const query = this.buildPedidosQuery();
+    index(queryParam) {
+        const query = this.indexQuery(queryParam);
         return this.documentoModel.aggregate(query).exec();
     }
-    buildPedidosQuery() {
+    indexExport(queryParam) {
+        const query = this.pedidosQuery(queryParam);
+        return this.documentoModel.aggregate(query).exec();
+    }
+    pedidosQuery(queryParam) {
         let query = [];
         query.push({ $match: { '_class': 'Pedido' } });
         query.push({ $match: { 'estatus': 'FINALIZADO' } });
@@ -25,6 +29,20 @@ class PedidoService {
         query.push({ $unwind: { path: '$tienda', preserveNullAndEmptyArrays: false } });
         // query.push({$limit:3});
         query.push({ $sort: { '_id': -1 } });
+        return query;
+    }
+    indexQuery(queryParam) {
+        const query = this.pedidosQuery(queryParam);
+        if (queryParam.offset === undefined) {
+            queryParam.offset = 0;
+        }
+        if (queryParam.max === undefined) {
+            queryParam.max = 15;
+        }
+        query.push({ $facet: {
+                'results': [{ $skip: Number(queryParam.offset) }, { $limit: Number(queryParam.max) }],
+                'count': [{ $count: 'count' }]
+            } });
         return query;
     }
 }

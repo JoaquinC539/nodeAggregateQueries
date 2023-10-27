@@ -5,12 +5,17 @@ import { PipelineStage } from "mongoose";
 export class PedidoService{
     constructor(private documentoModel: typeof DocumentoModel){}
 
-    public getPedidos():Promise<Array<Documento>>{
-            const query:Array<PipelineStage>=this.buildPedidosQuery()
+    public index(queryParam:{[key:string]:any}):Promise<Array<Documento>>{
+            const query:Array<PipelineStage>=this.indexQuery(queryParam)
             return this.documentoModel.aggregate(query).exec();
     }
+    public indexExport(queryParam:{[key:string]:any}):Promise<Array<Documento>>{
+        const query:Array<PipelineStage>=this.pedidosQuery(queryParam);
+        return this.documentoModel.aggregate(query).exec();
+    }
 
-    public buildPedidosQuery():Array<PipelineStage>{
+
+    public pedidosQuery(queryParam:{[key:string]:any}):Array<PipelineStage>{
         let query:Array<PipelineStage>=[];
             query.push({$match:{'_class':'Pedido'}});
             query.push({$match:{'estatus':'FINALIZADO'}})
@@ -27,6 +32,21 @@ export class PedidoService{
             // query.push({$limit:3});
             query.push({$sort:{'_id':-1}});
             return query;
+    }
+    public indexQuery(queryParam:{[key:string]:any}){
+        const query:Array<PipelineStage>=this.pedidosQuery(queryParam);
+        if(queryParam.offset===undefined){
+            queryParam.offset=0;
+        }
+        if(queryParam.max===undefined){
+            queryParam.max=15;
+        }
+        query.push({$facet:{
+            'results':[{$skip:Number(queryParam.offset)},{$limit:Number(queryParam.max)}],
+            'count':[{$count:'count'}]
+        }});
+        return query
+
     }
 
 }

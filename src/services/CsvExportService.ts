@@ -41,7 +41,7 @@ export class CsvExportService{
         return
     }
 
-    public async writeCSV(columns:any,data:Array<any>,fileName:string,formatters?:any):Promise<string>{
+    private async writeCSV(columns:any,data:Array<any>,fileName:string,formatters?:any):Promise<string>{
         return new  Promise<string>(async (resolve,reject) =>{
             const stringifier= await stringify({header:true,columns});
             const writableStream=await fs.createWriteStream(fileName,{encoding:'utf-8',flags:'a'});
