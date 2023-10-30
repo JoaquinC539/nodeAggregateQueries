@@ -11,7 +11,7 @@ export class AlmacenController{
         this._almacen=new AlmacenService(AlmacenModel);
         this._csv=new CsvExportService();
     }
-    public getAlmacenes =async (req:Request,res:Response):Promise<void>=>{
+    public index =async (req:Request,res:Response):Promise<void>=>{
             if(req.query.export==='true' || req.headers["content-type"]==="text/csv"){
                 try {
                     const almacenes:Array<Almacen>= await this._almacen.indexExport(req.query);
@@ -27,4 +27,5 @@ export class AlmacenController{
         const almacenes:Array<Almacen>= await this._almacen.index(req.query);
                 res.status(200).json(almacenes);
     }
+
 }

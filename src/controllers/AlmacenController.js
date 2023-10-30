@@ -15,7 +15,7 @@ const AlmacenService_1 = require("../services/AlmacenService");
 const CsvExportService_1 = require("../services/CsvExportService");
 class AlmacenController {
     constructor() {
-        this.getAlmacenes = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.index = (req, res) => __awaiter(this, void 0, void 0, function* () {
             if (req.query.export === 'true' || req.headers["content-type"] === "text/csv") {
                 try {
                     const almacenes = yield this._almacen.indexExport(req.query);

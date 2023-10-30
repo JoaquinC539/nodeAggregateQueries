@@ -17,8 +17,8 @@ export class Routes{
         this.routes.get('/index',this.indexController.index);
         this.routes.get('/index/js',this.indexController.js);
         this.routes.get('/index/css',this.indexController.css);
-        this.routes.get('/almacen',this.AlmacenController.getAlmacenes);
-        this.routes.get('/almacen/index',this.AlmacenController.getAlmacenes);
+        this.routes.get('/almacen',this.AlmacenController.index);
+        this.routes.get('/almacen/index',this.AlmacenController.index);
         this.routes.get('/pedido',this.DocumentoController.getPedidos);
         this.routes.get('/pedido/index',this.DocumentoController.getPedidos);
         this.routes.get('/ordenAbasto/cuentasCobrar',this.OrdenAbastoController.getCuentasPorCobrar)
