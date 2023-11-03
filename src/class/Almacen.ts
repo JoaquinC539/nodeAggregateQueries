@@ -37,7 +37,7 @@ export const AlmacenSchema: Schema<IAlmacen> = new Schema<IAlmacen>({
     inventarioNegativo?: boolean;
     noVenta?: boolean;
     direccion?: string;
-    direccionObj?: Direccion;
+    direccionObj?: IDireccion;
     offset?: number;
     rfc?: string;
   
@@ -49,7 +49,7 @@ export const AlmacenSchema: Schema<IAlmacen> = new Schema<IAlmacen>({
   }
   
 
-  export const AlmacenModel=mongoose.model<IAlmacen>("Almacen",AlmacenSchema,'almacen')
+  export const AlmacenModel=mongoose.model<IAlmacen>("Almacen",AlmacenSchema,'almacen');
 
 
   

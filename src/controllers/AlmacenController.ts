@@ -1,15 +1,18 @@
-import e, { Request,Response } from "express";
+import e, { Request,Response, response } from "express";
 import { Almacen, AlmacenModel, AlmacenSchema } from "../class/Almacen";
 import { AlmacenService } from "../services/AlmacenService";
 import { CsvExportService } from "../services/CsvExportService";
 import { AlmacenJoi } from "../Joi/AlmacenJoi";
+import { Types } from "mongoose";
 
 export class AlmacenController{
     private _almacen:AlmacenService;
-    private _csv:CsvExportService
+    private _csv:CsvExportService;
+    
     constructor(){
         this._almacen=new AlmacenService(AlmacenModel);
         this._csv=new CsvExportService();
+        
     }
     public index =async (req:Request,res:Response):Promise<void>=>{
             if(req.query.export==='true' || req.headers["content-type"]==="text/csv"){
@@ -28,7 +31,6 @@ export class AlmacenController{
                 res.status(200).json(almacenes);
     }
     public save=async(req:Request,res:Response):Promise<void>=>{
-        console.log(req.body)
         try {
             if(!req.body){
                 res.status(400).json({error:'Empty request'});
@@ -55,6 +57,28 @@ export class AlmacenController{
         } catch (error) {
             res.status(500).json(error);
         }
+    }
+    public update=async(req:Request,res:Response):Promise<void>=>{
+        try {
+            if(req.params.id===null){
+                res.status(400).json({error:'No value'});
+                return;
+            }
+            const id:Number | Types.ObjectId=isNaN(Number(req.params.id)) ? new Types.ObjectId(req.params.id) : Number(req.params.id);
+            AlmacenModel.findByIdAndUpdate(id,new Almacen(req.body)).exec()
+            .then(async(response:Almacen|null)=>{
+                if(response===null){
+                    res.status(404).json({error:"Not found"})
+                }
+                res.status(200).json(await AlmacenModel.findById(id))
+            })
+            .catch((error)=>{
+                res.status(500).json({error:error.message})
+            });
+        } catch (err) {
+            res.status(500).json({error:err})
+        }
+        
     }
 
 }

@@ -14,6 +14,7 @@ const Almacen_1 = require("../class/Almacen");
 const AlmacenService_1 = require("../services/AlmacenService");
 const CsvExportService_1 = require("../services/CsvExportService");
 const AlmacenJoi_1 = require("../Joi/AlmacenJoi");
+const mongoose_1 = require("mongoose");
 class AlmacenController {
     constructor() {
         this.index = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -33,7 +34,6 @@ class AlmacenController {
             res.status(200).json(almacenes);
         });
         this.save = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
             try {
                 if (!req.body) {
                     res.status(400).json({ error: 'Empty request' });
@@ -62,6 +62,28 @@ class AlmacenController {
             }
             catch (error) {
                 res.status(500).json(error);
+            }
+        });
+        this.update = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (req.params.id === null) {
+                    res.status(400).json({ error: 'No value' });
+                    return;
+                }
+                const id = isNaN(Number(req.params.id)) ? new mongoose_1.Types.ObjectId(req.params.id) : Number(req.params.id);
+                Almacen_1.AlmacenModel.findByIdAndUpdate(id, new Almacen_1.Almacen(req.body)).exec()
+                    .then((response) => __awaiter(this, void 0, void 0, function* () {
+                    if (response === null) {
+                        res.status(404).json({ error: "Not found" });
+                    }
+                    res.status(200).json(yield Almacen_1.AlmacenModel.findById(id));
+                }))
+                    .catch((error) => {
+                    res.status(500).json({ error: error.message });
+                });
+            }
+            catch (err) {
+                res.status(500).json({ error: err });
             }
         });
         this._almacen = new AlmacenService_1.AlmacenService(Almacen_1.AlmacenModel);

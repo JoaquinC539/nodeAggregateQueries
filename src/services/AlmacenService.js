@@ -10,9 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AlmacenService = void 0;
+const mongoose_1 = require("mongoose");
 class AlmacenService {
     constructor(almacenModel) {
         this.almacenModel = almacenModel;
+        this.types = mongoose_1.Types;
     }
     index(queryParam) {
         const query = this.indexQuery(queryParam);
@@ -40,11 +42,29 @@ class AlmacenService {
     }
     baseIndexQuery(queryParam) {
         let query = [];
-        query.push({ $match: { 'activo': { $eq: true } } });
-        query.push({ $group: {
-                '_id': '$_id',
-                'clave': { $first: '$clave' },
-                'nombre': { $first: '$nombre' },
+        if (queryParam.id !== undefined) {
+            if (isNaN(Number(queryParam.id))) {
+                query.push({ $match: { '_id': new mongoose_1.Types.ObjectId(queryParam.id) } });
+            }
+            else {
+                query.push({ $match: { '_id': Number(queryParam.id) } });
+            }
+        }
+        if (queryParam.nombre !== undefined) {
+            query.push({ $match: { 'nombre': String(queryParam.nombre) } });
+        }
+        if (queryParam.activo !== undefined && queryParam.activo == "on") {
+            query.push({ $match: { 'activo': { $in: [true, false] } } });
+        }
+        else {
+            query.push({ $match: { 'activo': { $eq: true } } });
+        }
+        query.push({ $project: {
+                '_id': 1,
+                'clave': 1,
+                'nombre': 1,
+                'direccion': 1,
+                'activo': 1
             } });
         query.push({ $sort: { '_id': -1 } });
         return query;
