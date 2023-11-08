@@ -21,25 +21,31 @@ export class AlmacenService{
             queryParam.max=15;
         }
         const query:Array<PipelineStage>=this.baseIndexQuery(queryParam);
-        query.push({$facet:{
-            'results':[{$skip:Number(queryParam.offset)},{$limit:Number(queryParam.max)}],
-            'count':[{$count:'count'}]
-        }});
+        if(queryParam.offset!==undefined && queryParam.max!==undefined){
+            query.push({$facet:{
+                'results':[{$skip:Number(queryParam.offset)},{$limit:Number(queryParam.max)}],
+                'count':[{$count:'count'}]
+            }});
+        }
+        
         return query
     }
      public baseIndexQuery(queryParam:{[key:string]:any}):Array<PipelineStage>{
-        let query:Array<PipelineStage>=[]
-            if(queryParam.id!==undefined){
+        let query:Array<PipelineStage>=[];
+            if(queryParam.id!==undefined && queryParam.id!=='' && queryParam.id!=="null"){
                 if(isNaN(Number(queryParam.id))){
-                    query.push({$match:{'_id':new Types.ObjectId(queryParam.id)}})
+                    if(Types.ObjectId.isValid(queryParam.id)){
+                        query.push({$match:{'_id':new Types.ObjectId(queryParam.id)}})
+                    }
                 }else{
                     query.push({$match:{'_id':Number(queryParam.id)}})
                 }
             }
-            if(queryParam.nombre!==undefined){
-                query.push({$match:{'nombre':String(queryParam.nombre)}})
+            if(queryParam.nombre!==undefined && queryParam.nombre!=='' && queryParam.nombre!=="null"){
+                // query.push({$match:{'nombre':String(queryParam.nombre)}})
+                query.push({$match:{'nombre':{$regex:queryParam.nombre,$options:'i'}}})
             }
-            if(queryParam.activo!==undefined && queryParam.activo=="on"){
+            if(queryParam.activo!==undefined && queryParam.activo=="on" && queryParam.activo!=="null"){
                 query.push({$match:{'activo':{$in:[true,false]}}})
             }else{
                 query.push({$match:{'activo':{$eq:true}}});
