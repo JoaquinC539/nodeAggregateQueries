@@ -37,3 +37,4 @@ class Documento {
 }
 exports.Documento = Documento;
 exports.DocumentoModel = mongoose_1.default.model("Documento", exports.DocumentoSchema, 'documento');
+//# sourceMappingURL=Documento.js.map

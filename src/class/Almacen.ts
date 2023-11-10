@@ -1,5 +1,6 @@
-import mongoose,{Schema,Document} from 'mongoose';
-import { IDireccion,DireccionSchema,Direccion } from './Direccion';
+import mongoose,{Schema,Document, Types,} from 'mongoose';
+import { IDireccion,DireccionSchema } from './Direccion';
+import { ObjectId } from 'mongodb';
 
 
 
@@ -16,6 +17,7 @@ export interface IAlmacen extends Document{
 }
 
 export const AlmacenSchema: Schema<IAlmacen> = new Schema<IAlmacen>({
+    _id:{type:Schema.Types.Mixed},
     nombre: String,
     clave: String,
     activo: Boolean,

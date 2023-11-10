@@ -13,3 +13,4 @@ exports.AlmacenJoi = joi_1.default.object({
     activo: joi_1.default.boolean(),
     inventarioNegativo: joi_1.default.boolean()
 });
+//# sourceMappingURL=AlmacenJoi.js.map

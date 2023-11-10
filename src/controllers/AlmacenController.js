@@ -26,12 +26,14 @@ class AlmacenController {
                     yield this._csv.exportCSV(res, columns, almacenes, fileName);
                     return;
                 }
-                catch (error) {
+                catch (error) { //
                     res.status(500).json(error);
                 }
             }
-            const almacenes = yield this._almacen.index(req.query);
-            res.status(200).json(almacenes);
+            this._almacen.index(req.query)
+                .then((data) => {
+                res.status(200).json(data);
+            });
         });
         this.save = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
@@ -64,26 +66,42 @@ class AlmacenController {
                 res.status(500).json(error);
             }
         });
+        this.get = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (req.params.id === null) {
+                    res.status(400).json({ error: 'No value' });
+                    return;
+                }
+                const result = yield this._almacen.searchForId(req.params.id);
+                res.status(200).json(result[0]);
+            }
+            catch (error) {
+                res.status(500).json(error);
+            }
+        });
         this.update = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 if (req.params.id === null) {
                     res.status(400).json({ error: 'No value' });
                     return;
                 }
-                const id = isNaN(Number(req.params.id)) ? new mongoose_1.Types.ObjectId(req.params.id) : Number(req.params.id);
-                Almacen_1.AlmacenModel.findByIdAndUpdate(id, new Almacen_1.Almacen(req.body)).exec()
-                    .then((response) => __awaiter(this, void 0, void 0, function* () {
-                    if (response === null) {
-                        res.status(404).json({ error: "Not found" });
-                    }
-                    res.status(200).json(yield Almacen_1.AlmacenModel.findById(id));
-                }))
-                    .catch((error) => {
-                    res.status(500).json({ error: error.message });
-                });
+                if (mongoose_1.Types.ObjectId.isValid(req.params.id)) {
+                    Almacen_1.AlmacenModel.findByIdAndUpdate(new mongoose_1.Types.ObjectId(req.params.id), req.body, { returnDocument: 'after' }).exec()
+                        .then((data) => {
+                        res.status(200).json(data);
+                        return;
+                    });
+                }
+                else {
+                    const query = yield Almacen_1.AlmacenModel.findByIdAndUpdate(Number(req.params.id), req.body, { returnDocument: 'after' }).exec()
+                        .then((data) => {
+                        res.status(200).json(data);
+                    });
+                    return;
+                }
             }
-            catch (err) {
-                res.status(500).json({ error: err });
+            catch (error) {
+                res.status(500).json(error);
             }
         });
         this._almacen = new AlmacenService_1.AlmacenService(Almacen_1.AlmacenModel);
@@ -91,3 +109,4 @@ class AlmacenController {
     }
 }
 exports.AlmacenController = AlmacenController;
+//# sourceMappingURL=AlmacenController.js.map

@@ -27,3 +27,4 @@ class Index {
 exports.Index = Index;
 const index = new Index(Number(process.env.PORT));
 index.connect();
+//# sourceMappingURL=index.js.map

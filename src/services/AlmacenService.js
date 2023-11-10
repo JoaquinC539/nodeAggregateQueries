@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AlmacenService = void 0;
+const Almacen_1 = require("../class/Almacen");
 const mongoose_1 = require("mongoose");
 class AlmacenService {
     constructor(almacenModel) {
@@ -74,5 +75,14 @@ class AlmacenService {
         query.push({ $sort: { '_id': -1 } });
         return query;
     }
+    searchForId(id) {
+        const query = [];
+        if (id !== undefined || id !== null) {
+            id = isNaN(Number(id)) ? new mongoose_1.Types.ObjectId(id) : Number(id);
+            query.push({ $match: { '_id': id } });
+        }
+        return Almacen_1.AlmacenModel.aggregate(query).exec();
+    }
 }
 exports.AlmacenService = AlmacenService;
+//# sourceMappingURL=AlmacenService.js.map

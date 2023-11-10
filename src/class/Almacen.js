@@ -27,6 +27,7 @@ exports.AlmacenModel = exports.Almacen = exports.AlmacenSchema = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const Direccion_1 = require("./Direccion");
 exports.AlmacenSchema = new mongoose_1.Schema({
+    _id: { type: mongoose_1.Schema.Types.Mixed },
     nombre: String,
     clave: String,
     activo: Boolean,
@@ -48,3 +49,4 @@ class Almacen {
 }
 exports.Almacen = Almacen;
 exports.AlmacenModel = mongoose_1.default.model("Almacen", exports.AlmacenSchema, 'almacen');
+//# sourceMappingURL=Almacen.js.map

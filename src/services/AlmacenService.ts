@@ -1,5 +1,5 @@
-import { PipelineStage } from "mongoose";
-import {  AlmacenModel } from "../class/Almacen";
+import { PipelineStage, Query } from "mongoose";
+import {  Almacen, AlmacenModel } from "../class/Almacen";
 import { Types } from "mongoose";
 
 export class AlmacenService{
@@ -59,5 +59,13 @@ export class AlmacenService{
             }})
             query.push({$sort:{'_id':-1}});
             return query;
+    }
+    public searchForId(id:any):Promise<any>{
+        const query:Array<PipelineStage>=[];
+        if(id!==undefined || id!==null){
+            id=isNaN(Number(id)) ? new Types.ObjectId(id) : Number(id);
+            query.push({$match:{'_id':id}});
+        }
+        return AlmacenModel.aggregate(query).exec();
     }
 }

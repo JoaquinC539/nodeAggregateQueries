@@ -31,3 +31,4 @@ class OrdenAbastoController {
     }
 }
 exports.OrdenAbastoController = OrdenAbastoController;
+//# sourceMappingURL=OrdenAbastoController.js.map

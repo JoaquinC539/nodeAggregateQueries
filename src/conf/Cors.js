@@ -21,3 +21,4 @@ class Cors {
     }
 }
 exports.Cors = Cors;
+//# sourceMappingURL=Cors.js.map

@@ -37,3 +37,4 @@ class OrdenAbasto {
 }
 exports.OrdenAbasto = OrdenAbasto;
 exports.OrdenAbastoModel = mongoose_1.default.model("OrdenAbasto", exports.OrdenAbastoSchema, 'documento');
+//# sourceMappingURL=OrdenAbasto.js.map

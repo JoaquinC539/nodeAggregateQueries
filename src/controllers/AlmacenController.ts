@@ -1,5 +1,5 @@
-import e, { Request,Response, response } from "express";
-import { Almacen, AlmacenModel, AlmacenSchema } from "../class/Almacen";
+import e, { Request,Response } from "express";
+import { Almacen, AlmacenModel, IAlmacen } from "../class/Almacen";
 import { AlmacenService } from "../services/AlmacenService";
 import { CsvExportService } from "../services/CsvExportService";
 import { AlmacenJoi } from "../Joi/AlmacenJoi";
@@ -23,12 +23,15 @@ export class AlmacenController{
                     await this._csv.exportCSV(res,columns,almacenes,fileName);
                     return;
                 }
-            catch (error) {
+            catch (error) {//
                 res.status(500).json(error)
             }
         }
-        const almacenes:Array<Almacen>= await this._almacen.index(req.query);
-                res.status(200).json(almacenes);
+        this._almacen.index(req.query)
+        .then((data:Array<Almacen>)=>{
+            res.status(200).json(data);
+        })
+                
     }
     public save=async(req:Request,res:Response):Promise<void>=>{
         try {
@@ -58,25 +61,40 @@ export class AlmacenController{
             res.status(500).json(error);
         }
     }
-    public update=async(req:Request,res:Response):Promise<void>=>{
+    public get=async(req:Request,res:Response):Promise<void>=>{
         try {
             if(req.params.id===null){
                 res.status(400).json({error:'No value'});
                 return;
             }
-            const id:Number | Types.ObjectId=isNaN(Number(req.params.id)) ? new Types.ObjectId(req.params.id) : Number(req.params.id);
-            AlmacenModel.findByIdAndUpdate(id,new Almacen(req.body)).exec()
-            .then(async(response:Almacen|null)=>{
-                if(response===null){
-                    res.status(404).json({error:"Not found"})
-                }
-                res.status(200).json(await AlmacenModel.findById(id))
-            })
-            .catch((error)=>{
-                res.status(500).json({error:error.message})
-            });
-        } catch (err) {
-            res.status(500).json({error:err})
+            const result:Array<any>=await this._almacen.searchForId(req.params.id);
+            res.status(200).json(result[0]);
+        }
+        catch(error){
+            res.status(500).json(error)
+        }  
+    }
+    public update=async(req:Request,res:Response):Promise<void>=>{
+        try {
+            if(req.params.id===null){
+                res.status(400).json({ error: 'No value' });
+                return;
+            }
+            if(Types.ObjectId.isValid(req.params.id)){
+                AlmacenModel.findByIdAndUpdate(new Types.ObjectId(req.params.id),req.body,{returnDocument:'after'}).exec()
+                .then((data)=>{
+                    res.status(200).json(data);
+                    return;
+                });
+            }else{
+                const query=await AlmacenModel.findByIdAndUpdate(Number(req.params.id),req.body,{returnDocument:'after'}).exec()
+                .then((data)=>{
+                    res.status(200).json(data);
+                })
+                return;
+            }
+        } catch (error) {
+            res.status(500).json(error)
         }
         
     }

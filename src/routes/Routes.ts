@@ -20,6 +20,7 @@ export class Routes{
         this.routes.get('/almacen',this.AlmacenController.index);
         this.routes.get('/almacen/index',this.AlmacenController.index);
         this.routes.post('/almacen',this.AlmacenController.save);
+        this.routes.get('/almacen/:id',this.AlmacenController.get);
         this.routes.put('/almacen/:id?',this.AlmacenController.update);
         this.routes.get('/pedido',this.DocumentoController.getPedidos);
         this.routes.get('/pedido/index',this.DocumentoController.getPedidos);

@@ -37,3 +37,4 @@ class Factura {
 }
 exports.Factura = Factura;
 exports.FacturaModel = mongoose_1.default.model("Factura", exports.FacturaSchema, 'factura');
+//# sourceMappingURL=Factura.js.map

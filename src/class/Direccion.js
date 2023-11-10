@@ -51,3 +51,4 @@ class Direccion {
 }
 exports.Direccion = Direccion;
 exports.DireccionModel = mongoose_1.default.model("Direccion", exports.DireccionSchema, 'direccion');
+//# sourceMappingURL=Direccion.js.map
