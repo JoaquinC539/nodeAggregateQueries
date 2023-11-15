@@ -49,6 +49,7 @@ class AlmacenController {
                     }
                     const clave = req.body.nombre.trim().toLowerCase();
                     const almacen = new Almacen_1.Almacen({
+                        _id: new mongoose_1.Types.ObjectId(),
                         nombre: req.body.nombre,
                         clave: clave,
                         inventarioNegativo: (req.body.inventarioNegativo ? req.body.inventarioNegativo : false),

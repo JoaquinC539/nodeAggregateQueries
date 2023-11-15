@@ -33,6 +33,7 @@ export const AlmacenSchema: Schema<IAlmacen> = new Schema<IAlmacen>({
   );
 
   export class Almacen {
+    _id:any
     nombre?: string;
     clave?: string;
     activo?: boolean;

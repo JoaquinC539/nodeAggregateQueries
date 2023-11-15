@@ -1,4 +1,4 @@
-import e, { Request,Response } from "express";
+import  { Request,Response } from "express";
 import { Almacen, AlmacenModel, IAlmacen } from "../class/Almacen";
 import { AlmacenService } from "../services/AlmacenService";
 import { CsvExportService } from "../services/CsvExportService";
@@ -43,6 +43,7 @@ export class AlmacenController{
                 if(error){res.status(400).json({error:"Error in almacen creation check the error",description:error.details[0].message});return;}
                 const clave:string=req.body.nombre.trim().toLowerCase();
                 const almacen=new Almacen({
+                    _id: new Types.ObjectId(),
                     nombre:req.body.nombre,
                     clave:clave,
                     inventarioNegativo:(req.body.inventarioNegativo?req.body.inventarioNegativo:false),
