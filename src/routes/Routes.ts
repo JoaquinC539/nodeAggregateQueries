@@ -5,6 +5,7 @@ import { AlmacenController } from "../controllers/AlmacenController";
 import { PedidoController } from "../controllers/PedidoController";
 import { OrdenAbastoController } from "../controllers/OrdenAbastoController";
 import { FacturaController } from "../controllers/FacturaController";
+import { TransporteController } from "../class/TransporteController";
 export class Routes{
     public routes:Router=express.Router();
     private indexController:IndexController=new IndexController();
@@ -12,6 +13,7 @@ export class Routes{
     private DocumentoController:PedidoController=new PedidoController();
     private OrdenAbastoController:OrdenAbastoController=new OrdenAbastoController();
     private FacturaController:FacturaController=new FacturaController();
+    private TransporteController:TransporteController=new TransporteController();
     constructor(){
         this.routes.get('/',this.indexController.index);
         this.routes.get('/index',this.indexController.index);
@@ -27,6 +29,7 @@ export class Routes{
         this.routes.get('/ordenAbasto/cuentasCobrar',this.OrdenAbastoController.getCuentasPorCobrar)
         this.routes.get('/factura',this.FacturaController.getIndexFacturas);
         this.routes.get('/factura/index',this.FacturaController.getIndexFacturas);
+        this.routes.use('/',this.TransporteController.transportRouter)
         
     }
 
